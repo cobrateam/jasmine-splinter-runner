@@ -2,3 +2,19 @@ jasmine-splinter-runner
 =======================
 
 `Jasmine <http://pivotal.github.com/jasmine/>`_ runner based on `splinter <http://splinter.cobrateam.info>`_.
+
+Installing
+----------
+
+You can install ``jasmine-splinter-runner`` using pip: ::
+
+    $ [sudo] pip install jasmine-splinter-runner
+
+Using
+-----
+
+After install it, all you need to do is run the command ``jasmine-splinter`` in your terminal: ::
+
+    $ jasmine-splinter
+
+This command will look for a file called ``SpecRunner.html`` and run these specs.
