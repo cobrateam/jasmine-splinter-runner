@@ -17,4 +17,13 @@ After install it, all you need to do is run the command ``jasmine-splinter`` in 
 
     $ jasmine-splinter
 
-This command will look for a file called ``SpecRunner.html`` and run these specs.
+You can use some options:
+
+    -u URL, --url=URL
+                    the runner url
+
+    -f FILE_PATH, --file-path=FILE_PATH
+                    runner file path
+
+
+By default this command will look for a file called ``SpecRunner.html`` and run these specs.

@@ -36,7 +36,7 @@ def main():
     default_runner_path = os.path.join(current_directory, 'SpecRunner.html')
 
     parser = OptionParser()
-    parser.add_option("-u", "--url", dest="url", help="a url for the runner", default="")
+    parser.add_option("-u", "--url", dest="url", help="the runner url", default="")
     parser.add_option("-f", "--file-path", dest="file_path", help="runner file path", default=default_runner_path)
 
     (options, args) = parser.parse_args()
