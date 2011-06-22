@@ -25,6 +25,12 @@ class TestJasmineRunner(mocker.MockerTestCase):
         self._buf.seek(0)
         assert value in self._buf.read()
 
+    def _mock_colored_output(self, color):
+        colored = self.mocker.replace('termcolor.colored')
+        colored(mocker.ANY, color)
+        self.mocker.result('bla')
+        self.mocker.replay()
+
     def test_should_print_the_resume_of_the_spec_running_for_passed_specs(self):
         "should print the resume of the spec running for passed specs"
         run_specs(path_to_file('passed-specs.html'))
@@ -37,10 +43,7 @@ class TestJasmineRunner(mocker.MockerTestCase):
 
     def test_green_resume(self):
         "should print a green resume for passed specs"
-        colored = self.mocker.replace('termcolor.colored')
-        colored(mocker.ANY, 'green')
-        self.mocker.result('bla')
-        self.mocker.replay()
+        self._mock_colored_output('green')
 
         run_specs(path_to_file('passed-specs.html'))
         self.assert_printed('bla')
@@ -49,10 +52,7 @@ class TestJasmineRunner(mocker.MockerTestCase):
 
     def test_red_resume(self):
         "should print a red resume for failed specs"
-        colored = self.mocker.replace('termcolor.colored')
-        colored(mocker.ANY, 'red')
-        self.mocker.result('bla')
-        self.mocker.replay()
+        self._mock_colored_output('red')
 
         run_specs(path_to_file('failed-specs.html'))
         self.assert_printed('bla')
