@@ -18,11 +18,9 @@ def run_specs(path, browser_driver='webdriver.firefox'):
     passed = 'passed' in runner_div['class']
 
     if passed:
-        color = 'green'
-        exit_status = 0
+        color, exit_status = 'green', 0
     else:
-        color = 'red'
-        exit_status = 1
+        color, exit_status = 'red', 1
 
     output = browser.find_by_css('.runner span .description').first.text
     browser.quit()
