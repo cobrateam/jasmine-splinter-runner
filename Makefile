@@ -1,15 +1,15 @@
 all: test
 
-dependencies: specloud coverage
+dependencies: nose coverage
 
-specloud:
-	@python -c 'import specloud' 2>/dev/null || pip install specloud
+nose:
+	@python -c 'import nose' 2>/dev/null || pip install nose
 
 coverage:
 	@python -c 'import coverage' 2>/dev/null || pip install coverage
 
 test: dependencies clean
-	@specloud --nocapture --with-coverage --cover-erase --cover-inclusive --cover-package=jasmine_runner
+	@nosetests --verbosity=2 --nocapture --with-coverage --cover-erase --cover-inclusive --cover-package=jasmine_runner
 
 clean:
 	@echo -n 'Cleaning... '
