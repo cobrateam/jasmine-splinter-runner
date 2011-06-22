@@ -47,6 +47,3 @@ def main():
         runner_path = "file://%s" % os.path.abspath(options.file_path)
 
     sys.exit(run_specs(runner_path))
-
-if __name__ == '__main__':
-    main()
