@@ -27,3 +27,9 @@ You can use some options:
 
 
 By default this command will look for a file called ``SpecRunner.html`` and run these specs.
+
+Development
+-----------
+
+* source hosted at `github <http://github.com/cobrateam/jasmine-splinter-runner>`_.
+* report issues on `github issues <http://github.com/cobrateam/jasmine-splinter/runner/issues>`_.
