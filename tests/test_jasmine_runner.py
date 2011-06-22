@@ -21,6 +21,7 @@ class TestJasmineRunner(unittest.TestCase):
         sys.stdout = self._stdout
 
     def test_shold_print_the_resume_of_the_spec_running_for_passed_specs(self):
+        "should print the resume of the spec running for passed specs"
         run_specs(path_to_file('passed-specs.html'))
 
         self._buf.seek(0)
@@ -28,6 +29,7 @@ class TestJasmineRunner(unittest.TestCase):
         assert '4 specs, 0 failures in 0.031s' in content
 
     def test_shold_print_the_resume_of_the_spec_running_for_failed_specs(self):
+        "should print the resume of the spec running for failed specs"
         run_specs(path_to_file('failed-specs.html'))
 
         self._buf.seek(0)
