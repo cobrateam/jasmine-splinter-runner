@@ -8,10 +8,10 @@ from termcolor import colored
 from optparse import OptionParser
 from splinter.browser import Browser
 
-def run_specs(path):
+def run_specs(path, browser_driver='webdriver.firefox'):
     print 'Using %s as runner.' % path
 
-    browser = Browser()
+    browser = Browser(browser_driver)
     browser.visit(path)
 
     runner_div = browser.find_by_css('.runner').first

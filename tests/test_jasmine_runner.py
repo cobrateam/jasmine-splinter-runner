@@ -58,3 +58,36 @@ class TestJasmineRunner(mocker.MockerTestCase):
         self.assert_printed('bla')
 
         self.mocker.verify()
+
+    def test_splinter_driver(self):
+        "should be able to customize the splinter driver to use"
+        from splinter.browser import Browser
+        chrome_mock = Browser('webdriver.firefox')
+        firefox_mock = Browser('webdriver.firefox')
+
+        Browser = self.mocker.replace('splinter.browser.Browser')
+        Browser('webdriver.chrome')
+        self.mocker.result(chrome_mock)
+
+        Browser('webdriver.firefox')
+        self.mocker.result(firefox_mock)
+        self.mocker.replay()
+
+        run_specs(path_to_file('failed-specs.html'), browser_driver='webdriver.chrome')
+        run_specs(path_to_file('passed-specs.html'), browser_driver='webdriver.firefox')
+
+        self.mocker.verify()
+
+    def test_firefox_default_driver(self):
+        "when no driver is specified, Firefox should be used"
+        from splinter.browser import Browser
+        browser = Browser('webdriver.firefox')
+
+        Browser = self.mocker.replace('splinter.browser.Browser')
+        Browser('webdriver.firefox')
+        self.mocker.result(browser)
+        self.mocker.replay()
+
+        run_specs(path_to_file('passed-specs.html'))
+
+        self.mocker.verify()
