@@ -5,7 +5,7 @@ README = open('README.rst').read()
 
 setup(name='jasmine-splinter-runner',
       version=__version__,
-      description='jasmine runne based on splinter',
+      description='jasmine runner based on splinter',
       long_description=README,
       author='CobraTeam',
       author_email='francisco@franciscosouza.net',
