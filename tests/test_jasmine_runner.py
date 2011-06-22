@@ -91,3 +91,8 @@ class TestJasmineRunner(mocker.MockerTestCase):
         run_specs(path_to_file('passed-specs.html'))
 
         self.mocker.verify()
+
+    def test_exit_status(self):
+        "should return the proper exit status (very useful for continuous integration jobs)"
+        assert 0 == run_specs(path_to_file('passed-specs.html'))
+        assert 1 == run_specs(path_to_file('failed-specs.html'))
