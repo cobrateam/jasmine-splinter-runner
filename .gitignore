@@ -3,3 +3,4 @@
 .coverage
 dist
 *.egg-info
+.ropeproject
