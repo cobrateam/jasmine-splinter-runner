@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+import argparse
 import os
 import sys
 
@@ -28,20 +29,19 @@ def run_specs(path, browser_driver='webdriver.firefox'):
     print colored(output, color)
     return exit_status
 
-def main():
+def main(args=sys.argv):
     ''' Runs Jasmine specs via console. '''
     current_directory = os.getcwd()
     default_runner_path = os.path.join(current_directory, 'SpecRunner.html')
 
-    parser = OptionParser()
-    parser.add_option("-u", "--url", dest="url", help="the runner url", default="")
-    parser.add_option("-f", "--file-path", dest="file_path", help="runner file path", default=default_runner_path)
+    parser = argparse.ArgumentParser(description=u'Run your jasmine specs from command line using splinter')
+    parser.add_argument('-f', '--filepath', metavar='filepath', help='path to runner file', default=default_runner_path)
+    parser.add_argument('-u', '--url', metavar='url', help='url to runner', default=None)
+    args = parser.parse_args(args)
 
-    (options, args) = parser.parse_args()
-
-    if options.url != "":
-        runner_path = options.url
+    if args.url:
+        runner_path = args.url
     else:
-        runner_path = "file://%s" % os.path.abspath(options.file_path)
+        runner_path = 'file://%s' % args.filepath
 
     sys.exit(run_specs(runner_path))

@@ -31,6 +31,10 @@ class TestJasmineRunner(mocker.MockerTestCase):
         self.mocker.result('bla')
         self.mocker.replay()
 
+    def _mock_exit(self, w=mocker.ANY):
+        exit = self.mocker.replace('sys.exit')
+        exit(w)
+
     def test_should_print_the_resume_of_the_spec_running_for_passed_specs(self):
         "should print the resume of the spec running for passed specs"
         run_specs(path_to_file('passed-specs.html'))
@@ -96,3 +100,36 @@ class TestJasmineRunner(mocker.MockerTestCase):
         "should return the proper exit status (very useful for continuous integration jobs)"
         assert 0 == run_specs(path_to_file('passed-specs.html'))
         assert 1 == run_specs(path_to_file('failed-specs.html'))
+
+    def test_main_with_default_options(self):
+        "should look for a SpecRunner.html file in the current directory by default"
+        getcwd = self.mocker.replace('os.getcwd')
+        getcwd()
+        self.mocker.result(FIXTURES_ROOT)
+        self._mock_exit()
+        self.mocker.replay()
+
+        from jasmine_runner.commands import main
+        main(args=[])
+
+        self.mocker.verify()
+
+    def test_specify_filepath(self):
+        "should be able to specify the filepath"
+        self._mock_exit(w=0)
+        self.mocker.replay()
+
+        from jasmine_runner.commands import main
+        main(args=['--filepath=%s' % os.path.join(FIXTURES_ROOT, 'passed-specs.html')])
+
+        self.mocker.verify()
+
+    def test_specify_url(self):
+        "should be able to specify the url of the runner"
+        self._mock_exit(w=0)
+        self.mocker.replay()
+
+        from jasmine_runner.commands import main
+        main(args=['--url=%s' % path_to_file('passed-specs.html')])
+
+        self.mocker.verify()
