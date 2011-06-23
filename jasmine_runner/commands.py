@@ -38,6 +38,7 @@ def main(args=sys.argv):
     parser.add_argument('-f', '--filepath', metavar='filepath', help='path to runner file', default=default_runner_path)
     parser.add_argument('-u', '--url', metavar='url', help='url to runner', default=None)
     parser.add_argument('-b', '--browser-driver', metavar='browser_driver', help='splinter driver to use', default='webdriver.firefox')
+    args = args[1:]
     args = parser.parse_args(args)
 
     if args.url:
