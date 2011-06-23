@@ -25,7 +25,7 @@ You can use some options:
     -f FILE_PATH, --filepath=FILE_PATH
                     runner file path
 
-    -b BROWSER.DRIVER, --browser-driver
+    -b BROWSER_DRIVER, --browser-driver=BROWSER_DRIVER
                     splinter browser driver (check splinter docs for available drivers)
 
 
