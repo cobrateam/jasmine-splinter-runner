@@ -12,7 +12,7 @@ setup(name='jasmine-splinter-runner',
       packages=find_packages(),
       include_package_data=True,
       test_suite='nose.collector',
-      install_requires=['splinter', 'termcolor'],
+      install_requires=['argparse', 'splinter', 'termcolor'],
       entry_points = {
           'console_scripts' : [
               'jasmine-splinter = jasmine_runner.commands:main',
