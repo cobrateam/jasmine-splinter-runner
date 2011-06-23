@@ -1,6 +1,9 @@
 all: test
 
-dependencies: coverage mocker nose
+dependencies: coverage mocker nose argparse
+
+argparse:
+	@python -c 'import argparse' 2>/dev/null || pip install argparse
 
 coverage:
 	@python -c 'import coverage' 2>/dev/null || pip install coverage
