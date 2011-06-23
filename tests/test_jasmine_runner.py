@@ -110,7 +110,7 @@ class TestJasmineRunner(mocker.MockerTestCase):
         self.mocker.replay()
 
         from jasmine_runner.commands import main
-        main(args=[])
+        main(args=['jasmine-splinter'])
 
         self.mocker.verify()
 
@@ -120,7 +120,7 @@ class TestJasmineRunner(mocker.MockerTestCase):
         self.mocker.replay()
 
         from jasmine_runner.commands import main
-        main(args=['--filepath=%s' % os.path.join(FIXTURES_ROOT, 'passed-specs.html')])
+        main(args=['jasmine-splinter', '--filepath=%s' % os.path.join(FIXTURES_ROOT, 'passed-specs.html')])
 
         self.mocker.verify()
 
@@ -130,7 +130,7 @@ class TestJasmineRunner(mocker.MockerTestCase):
         self.mocker.replay()
 
         from jasmine_runner.commands import main
-        main(args=['--url=%s' % path_to_file('passed-specs.html')])
+        main(args=['jasmine-splinter', '--url=%s' % path_to_file('passed-specs.html')])
 
         self.mocker.verify()
 
@@ -146,6 +146,6 @@ class TestJasmineRunner(mocker.MockerTestCase):
         self.mocker.replay()
 
         from jasmine_runner.commands import main
-        main(args=['--browser-driver=webdriver.chrome', '--url=%s' % path_to_file('passed-specs.html')])
+        main(args=['jasmine-splinter', '--browser-driver=webdriver.chrome', '--url=%s' % path_to_file('passed-specs.html')])
 
         self.mocker.verify()
