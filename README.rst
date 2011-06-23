@@ -22,8 +22,11 @@ You can use some options:
     -u URL, --url=URL
                     the runner url
 
-    -f FILE_PATH, --file-path=FILE_PATH
+    -f FILE_PATH, --filepath=FILE_PATH
                     runner file path
+
+    -b BROWSER.DRIVER, --browser-driver
+                    splinter browser driver (check splinter docs for available drivers)
 
 
 By default this command will look for a file called ``SpecRunner.html`` and run these specs.
