@@ -37,6 +37,7 @@ def main(args=sys.argv):
     parser = argparse.ArgumentParser(description=u'Run your jasmine specs from command line using splinter')
     parser.add_argument('-f', '--filepath', metavar='filepath', help='path to runner file', default=default_runner_path)
     parser.add_argument('-u', '--url', metavar='url', help='url to runner', default=None)
+    parser.add_argument('-b', '--browser-driver', metavar='browser_driver', help='splinter driver to use', default='webdriver.firefox')
     args = parser.parse_args(args)
 
     if args.url:
@@ -44,4 +45,4 @@ def main(args=sys.argv):
     else:
         runner_path = 'file://%s' % args.filepath
 
-    sys.exit(run_specs(runner_path))
+    sys.exit(run_specs(runner_path, args.browser_driver))

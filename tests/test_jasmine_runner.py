@@ -133,3 +133,19 @@ class TestJasmineRunner(mocker.MockerTestCase):
         main(args=['--url=%s' % path_to_file('passed-specs.html')])
 
         self.mocker.verify()
+
+    def test_choose_the_splinter_driver(self):
+        "should be able to choose the splinter driver from command line"
+        from splinter.browser import Browser
+        browser = Browser('webdriver.firefox')
+
+        self._mock_exit(w=0)
+        Browser = self.mocker.replace('splinter.browser.Browser')
+        Browser('webdriver.chrome')
+        self.mocker.result(browser)
+        self.mocker.replay()
+
+        from jasmine_runner.commands import main
+        main(args=['--browser-driver=webdriver.chrome', '--url=%s' % path_to_file('passed-specs.html')])
+
+        self.mocker.verify()
