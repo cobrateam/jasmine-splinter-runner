@@ -18,13 +18,14 @@ def run_specs(path, browser_driver='webdriver.firefox'):
 
     runner_div = browser.find_by_css('.runner').first
     passed = 'passed' in runner_div['class']
+    output = browser.find_by_css('.runner .description').first.text
 
     if passed:
         color, exit_status = 'green', 0
     else:
-        color, exit_status = 'red', 1
+        failures = int(re.match(r'.*?(\d+)\s*failures?.*', output).group(1))
+        color, exit_status = 'red', failures
 
-    output = browser.find_by_css('.runner span .description').first.text
     browser.quit()
 
     print colored(output, color)

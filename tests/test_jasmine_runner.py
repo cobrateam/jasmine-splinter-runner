@@ -43,7 +43,7 @@ class TestJasmineRunner(mocker.MockerTestCase):
     def test_should_print_the_resume_of_the_spec_running_for_failed_specs(self):
         "should print the resume of the spec running for failed specs"
         run_specs(path_to_file('failed-specs.html'))
-        self.assert_printed('4 specs, 1 failure in 0.028s')
+        self.assert_printed('4 specs, 2 failures in 0.028s')
 
     def test_green_resume(self):
         "should print a green resume for passed specs"
@@ -99,7 +99,7 @@ class TestJasmineRunner(mocker.MockerTestCase):
     def test_exit_status(self):
         "should return the proper exit status (very useful for continuous integration jobs)"
         assert 0 == run_specs(path_to_file('passed-specs.html'))
-        assert 1 == run_specs(path_to_file('failed-specs.html'))
+        assert 2 == run_specs(path_to_file('failed-specs.html'))
 
     def test_main_with_default_options(self):
         "should look for a SpecRunner.html file in the current directory by default"
