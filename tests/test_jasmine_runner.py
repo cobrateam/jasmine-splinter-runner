@@ -149,3 +149,25 @@ class TestJasmineRunner(mocker.MockerTestCase):
         main(args=['jasmine-splinter', '--browser-driver=webdriver.chrome', '--url=%s' % path_to_file('passed-specs.html')])
 
         self.mocker.verify()
+
+    def test_the_first_argument_can_be_a_file_path(self):
+        "should be able to specify a url or file path"
+        self._mock_exit(w=0)
+        self.mocker.replay()
+
+        from jasmine_runner.commands import main
+        main(args=['jasmine-splinter', os.path.join(FIXTURES_ROOT, 'passed-specs.html')])
+
+        self.mocker.verify()
+
+    def test_the_first_argument_can_be_a_url(self):
+        "should be able to specify a url or file path"
+        self._mock_exit(w=0)
+        self.mocker.replay()
+
+        from jasmine_runner.commands import main
+        main(args=['jasmine-splinter', path_to_file('passed-specs.html')])
+
+        self.mocker.verify()
+
+
