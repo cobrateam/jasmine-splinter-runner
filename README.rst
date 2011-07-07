@@ -15,15 +15,11 @@ Using
 
 After install it, all you need to do is run the command ``jasmine-splinter`` in your terminal: ::
 
-    $ jasmine-splinter
+    $ jasmine-splinter URI
+
+Where URI can be a file path (ex: ../runner.html) or an URL (http://localhost/runner.html).
 
 You can use some options:
-
-    -u URL, --url=URL
-                    the runner url
-
-    -f FILE_PATH, --filepath=FILE_PATH
-                    runner file path
 
     -b BROWSER_DRIVER, --browser-driver=BROWSER_DRIVER
                     splinter browser driver (check splinter docs for available drivers)
