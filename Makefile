@@ -1,6 +1,9 @@
 all: test
 
-dependencies: coverage mocker nose argparse
+dependencies: coverage mocker nose argparse termcolor
+
+termcolor:
+	@python -c 'import termcolor' 2>/dev/null || pip install termcolor
 
 argparse:
 	@python -c 'import argparse' 2>/dev/null || pip install argparse
