@@ -9,7 +9,7 @@ import warnings
 
 from termcolor import colored
 from splinter.browser import Browser
-from jasmine_runner.string_formatter import format
+from jasmine_runner.string_formatter import format_exit
 from jasmine_runner.jasmine_extractor import extract_failures
 
 def run_specs(path, browser_driver='webdriver.firefox'):
@@ -32,26 +32,13 @@ def run_specs(path, browser_driver='webdriver.firefox'):
     else:
         failures = int(re.search(r'(\d+)\s*failure', output).group(1))
         color, exit_status = 'red', failures
-
-        print
-
-        print len(output) * "-"
-        print colored(output, color)
-        print len(output) * "-"
-
-        print
-
-        suite = browser.find_by_css(".jasmine_reporter .suite.failed .description").first.text
-        print colored("Suite: " + suite)
-
-        specs = browser.find_by_css(".jasmine_reporter .suite.failed .suite.failed .spec.failed .description")
-
-        for spec in specs:
-            print colored("   Spec: " + spec.text, color)
+        print format_exit(browser, output, color)
 
     browser.quit()
 
     return exit_status
+
+
 
 def has_scheme(uri):
     return bool(re.match(r'^[^:]+://', uri))
