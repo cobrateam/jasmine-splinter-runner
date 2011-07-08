@@ -20,7 +20,11 @@ def run_specs(path, browser_driver='webdriver.firefox'):
 
     runner_div = browser.find_by_css('.runner').first
     passed = 'passed' in runner_div['class']
-    output = browser.find_by_css('.runner .description').first.text
+
+    while browser.is_text_present("Running..."):
+        pass
+
+    output = browser.find_by_css(".runner .description").first.text
 
     if passed:
         color, exit_status = 'green', 0
@@ -28,8 +32,19 @@ def run_specs(path, browser_driver='webdriver.firefox'):
     else:
         failures = int(re.search(r'(\d+)\s*failure', output).group(1))
         color, exit_status = 'red', failures
+
+        print len(output)*"-"
         print colored(output, color)
-        print format(extract_failures(browser))
+        print len(output)*"-"
+
+        suite = browser.find_by_css(".jasmine_reporter .suite.failed .description").first.text
+        print colored("Suite: " + suite)
+
+        specs = browser.find_by_css(".jasmine_reporter .suite.failed .suite.failed .spec.failed .description")
+        result_messages = browser.find_by_css(".jasmine_reporter .suite.failed .suite.failed .spec.failed .messages .resultMessage")
+
+        for spec in specs:
+            print colored("   Spec: " + spec.text)
 
     browser.quit()
 
