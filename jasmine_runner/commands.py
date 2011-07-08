@@ -33,9 +33,13 @@ def run_specs(path, browser_driver='webdriver.firefox'):
         failures = int(re.search(r'(\d+)\s*failure', output).group(1))
         color, exit_status = 'red', failures
 
-        print len(output)*"-"
+        print
+
+        print len(output) * "-"
         print colored(output, color)
-        print len(output)*"-"
+        print len(output) * "-"
+
+        print
 
         suite = browser.find_by_css(".jasmine_reporter .suite.failed .description").first.text
         print colored("Suite: " + suite)
