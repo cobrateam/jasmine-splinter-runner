@@ -1,22 +1,21 @@
+def format_exit(browser, output, color):
+        print
 
-def format(errors):
-    ret = []
-    for error in errors:
-        ret.extend(_print(error, [], 0));
-    return '\n'.join(ret)
+        print len(output) * "-"
+        print colored(output, color)
+        print len(output) * "-"
 
+        print
 
-def _print(obj, buffer, level):
-    for title, desc in obj.iteritems():
-        buffer.append((level * 2 * ' ') + title);
-        if desc and isinstance(desc[0], basestring):
-            for err in desc:
-                buffer.append('%s >> %s' %((level * 2 * ' '), err));
-        else:
-            level += 1;
-            for suite in desc:
-                _print(suite, buffer, level);
+        suite = browser.find_by_css(".jasmine_reporter .suite.failed .description").first.text
+        print colored("Suite: " + suite)
 
-    return buffer
+        specs = browser.find_by_css(".jasmine_reporter .suite.failed .suite.failed .spec.failed")
 
+        for spec in specs:
+            spec_description = spec.find_by_css(".description").first
+            print colored("   Spec: " + spec_description.text)
+            result_messages = spec.find_by_css(".messages .resultMessage")
 
+            for result_message in result_messages:
+                print colored("        Test: " + result_message.text, color)
