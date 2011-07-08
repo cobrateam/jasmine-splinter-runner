@@ -9,6 +9,8 @@ import warnings
 
 from termcolor import colored
 from splinter.browser import Browser
+from jasmine_runner.string_formatter import format
+from jasmine_runner.jasmine_extractor import extract_failures
 
 def run_specs(path, browser_driver='webdriver.firefox'):
     print 'Using %s as runner.' % path
@@ -22,17 +24,19 @@ def run_specs(path, browser_driver='webdriver.firefox'):
 
     if passed:
         color, exit_status = 'green', 0
+        print colored(output, color)
     else:
-        failures = int(re.match(r'.*?(\d+)\s*failures?.*', output).group(1))
+        failures = int(re.search(r'(\d+)\s*failure', output).group(1))
         color, exit_status = 'red', failures
+        print colored(output, color)
+        print format(extract_failures(browser))
 
     browser.quit()
 
-    print colored(output, color)
     return exit_status
 
 def has_scheme(uri):
-    return bool(re.match('^[^:]+://', uri))
+    return bool(re.match(r'^[^:]+://', uri))
 
 def main(args=sys.argv):
     ''' Runs Jasmine specs via console. '''
