@@ -1,3 +1,5 @@
+from termcolor import colored
+
 def format_exit(browser, output, color):
         print
 

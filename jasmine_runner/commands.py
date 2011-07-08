@@ -10,7 +10,6 @@ import warnings
 from termcolor import colored
 from splinter.browser import Browser
 from jasmine_runner.string_formatter import format_exit
-from jasmine_runner.jasmine_extractor import extract_failures
 
 def run_specs(path, browser_driver='webdriver.firefox'):
     print 'Using %s as runner.' % path
