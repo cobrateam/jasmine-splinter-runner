@@ -17,11 +17,11 @@ def run_specs(path, browser_driver='webdriver.firefox'):
     browser = Browser(browser_driver)
     browser.visit(path)
 
-    runner_div = browser.find_by_css('.runner').first
-    passed = 'passed' in runner_div['class']
-
     while browser.is_text_present("Running..."):
         pass
+
+    runner_div = browser.find_by_css('.runner').first
+    passed = 'passed' in runner_div['class']
 
     output = browser.find_by_css(".runner .description").first.text
 
