@@ -45,10 +45,9 @@ def run_specs(path, browser_driver='webdriver.firefox'):
         print colored("Suite: " + suite)
 
         specs = browser.find_by_css(".jasmine_reporter .suite.failed .suite.failed .spec.failed .description")
-        result_messages = browser.find_by_css(".jasmine_reporter .suite.failed .suite.failed .spec.failed .messages .resultMessage")
 
         for spec in specs:
-            print colored("   Spec: " + spec.text)
+            print colored("   Spec: " + spec.text, color)
 
     browser.quit()
 
