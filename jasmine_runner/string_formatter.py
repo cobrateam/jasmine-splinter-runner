@@ -12,12 +12,17 @@ def format_exit(browser, output, color):
         suite = browser.find_by_css(".jasmine_reporter .suite.failed .description").first.text
         print colored("Suite: " + suite)
 
-        specs = browser.find_by_css(".jasmine_reporter .suite.failed .suite.failed .spec.failed")
+        specs_suites = browser.find_by_css(".jasmine_reporter .suite.failed .suite.failed")
 
-        for spec in specs:
-            spec_description = spec.find_by_css(".description").first
-            print colored("   Spec: " + spec_description.text)
-            result_messages = spec.find_by_css(".messages .resultMessage")
+        for spec_suite in specs_suites:
+            print colored("    Spec Suite: " + spec_suite.find_by_css(".description").first.text)
 
-            for result_message in result_messages:
-                print colored("        Test: " + result_message.text, color)
+            specs = spec_suite.find_by_css(".spec.failed")
+
+            for spec in specs:
+                spec_description = spec.find_by_css(".description").first
+                print colored("        Spec: " + spec_description.text)
+                result_messages = spec.find_by_css(".messages .resultMessage")
+
+                for result_message in result_messages:
+                    print colored("            Test: " + result_message.text, color)
