@@ -32,7 +32,8 @@ def run_specs(path, browser_driver='webdriver.firefox'):
     else:
         failures = int(re.search(r'(\d+)\s*failure', output).group(1))
         color, exit_status = 'red', failures
-        print format_exit(browser, output, color)
+        format_exit(browser, output, color)
+        print
 
     browser.quit()
 
