@@ -9,7 +9,7 @@ import warnings
 
 from termcolor import colored
 from splinter.browser import Browser
-from jasmine_runner.string_formatter import format_exit
+from jasmine_runner.string_formatter import print_errors
 
 def run_specs(path, browser_driver='webdriver.firefox'):
     print
@@ -27,13 +27,11 @@ def run_specs(path, browser_driver='webdriver.firefox'):
     output = browser.find_by_css(".runner .description").first.text
 
     if passed:
-        color, exit_status = 'green', 0
-        print colored(output, color)
+        exit_status = 0
+        print colored(output, 'green')
     else:
-        failures = int(re.search(r'(\d+)\s*failure', output).group(1))
-        color, exit_status = 'red', failures
-        format_exit(browser, output, color)
-        print
+        exit_status = int(re.search(r'(\d+)\s*failure', output).group(1))
+        print_errors(browser, output)
 
     browser.quit()
 
