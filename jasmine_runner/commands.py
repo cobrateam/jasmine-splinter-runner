@@ -12,7 +12,8 @@ from splinter.browser import Browser
 from jasmine_runner.string_formatter import format_exit
 
 def run_specs(path, browser_driver='webdriver.firefox'):
-    print 'Using %s as runner.' % path
+    print
+    print 'Using %s as runner and %s as webdriver.' % (path, browser_driver)
 
     browser = Browser(browser_driver)
     browser.visit(path)
