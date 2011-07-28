@@ -7,9 +7,10 @@ import re
 import sys
 import warnings
 
-from termcolor import colored
 from splinter.browser import Browser
-from jasmine_runner.string_formatter import print_errors
+from jasmine_extractor import Extractor
+from report import print_result
+
 
 def run_specs(path, browser_driver='webdriver.firefox'):
     print
@@ -21,26 +22,17 @@ def run_specs(path, browser_driver='webdriver.firefox'):
     while browser.is_text_present("Running..."):
         pass
 
-    runner_div = browser.find_by_css('.runner').first
-    passed = 'passed' in runner_div['class']
-
-    output = browser.find_by_css(".runner .description").first.text
-
-    if passed:
-        exit_status = 0
-        print colored(output, 'green')
-    else:
-        exit_status = int(re.search(r'(\d+)\s*failure', output).group(1))
-        print_errors(browser, output)
+    extractor = Extractor(browser)
+    print_result(extractor)
 
     browser.quit()
 
-    return exit_status
-
+    return extractor.failures_number
 
 
 def has_scheme(uri):
     return bool(re.match(r'^[^:]+://', uri))
+
 
 def main(args=sys.argv):
     ''' Runs Jasmine specs via console. '''
