@@ -1,24 +1,33 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
 import re
 
+from jasmine_runner.extractors import BaseExtractor, class_xpath_to_css
 
-def class_xpath_to_css(_class):
-    return '[contains(concat(" ",normalize-space(@class)," ")," %s ")]' % _class
 
-class Extractor(object):
+class Extractor(BaseExtractor):
 
-    def __init__(self, browser):
-        self.browser = browser
+    @staticmethod
+    def is_it_me(browser):
+        return browser.is_element_present_by_css('.jasmine_reporter')
+
+    def has_finished(self):
+        return not self.browser.is_text_present("Running...")
+
+    def has_failed(self):
+        runner_div = self.browser.find_by_css('.runner').first
+        return not 'passed' in runner_div['class']
 
     @property
     def failures_number(self):
         if hasattr(self, '_failures'):
             return self._failures
 
-        runner_div = self.browser.find_by_css('.runner').first
-        if 'passed' in runner_div['class']:
-            self._failures = 0
-        else:
+        if self.has_failed():
             self._failures = int(re.search(r'(\d+)\s*failure', self.description).group(1))
+        else:
+            self._failures = 0
 
         return self._failures
 
@@ -30,25 +39,7 @@ class Extractor(object):
         self._description = self.browser.find_by_css(".runner .description").first.text
         return self._description
 
-    def has_finished(self):
-        return self.browser.is_text_present("Running...")
-
-    def wait_till_finished_and_then(self, function):
-        # maybe we can make this
-        while self.has_finished():
-            pass
-
-        function(self)
-
     def get_failures(self):
-        '''
-            this function returns an array with the following structure:
-            [{'title of test suite':
-                [{'title of nested test suite':
-                    [{'spec description': 'spec error message'}, ...]
-                , ...]
-            , ...]
-        '''
         rootDescribes = self.browser.find_by_xpath('//*%s/*%s%s' % (
             class_xpath_to_css('jasmine_reporter'),
             class_xpath_to_css('suite'),

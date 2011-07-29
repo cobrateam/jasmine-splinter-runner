@@ -8,7 +8,8 @@ import sys
 import warnings
 
 from splinter.browser import Browser
-from extractors.jasmine import Extractor
+from extractors.jasmine import Extractor as JExtractor
+from extractors.qunit import Extractor as QExtractor
 from reporters.stdout import print_result
 
 
@@ -18,6 +19,8 @@ def run_specs(path, browser_driver='webdriver.firefox'):
 
     browser = Browser(browser_driver)
     browser.visit(path)
+
+    Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, QExtractor])[0]
 
     extractor = Extractor(browser)
     extractor.wait_till_finished_and_then(print_result)
@@ -72,3 +75,4 @@ def main(args=sys.argv):
         runner_path = default_runner_path
 
     sys.exit(run_specs(runner_path, args.browser_driver))
+
