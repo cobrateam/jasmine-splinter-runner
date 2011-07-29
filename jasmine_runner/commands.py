@@ -8,8 +8,8 @@ import sys
 import warnings
 
 from splinter.browser import Browser
-from jasmine_extractor import Extractor
-from report import print_result
+from extractors.jasmine import Extractor
+from reporters.stdout import print_result
 
 
 def run_specs(path, browser_driver='webdriver.firefox'):
@@ -19,11 +19,8 @@ def run_specs(path, browser_driver='webdriver.firefox'):
     browser = Browser(browser_driver)
     browser.visit(path)
 
-    while browser.is_text_present("Running..."):
-        pass
-
     extractor = Extractor(browser)
-    print_result(extractor)
+    extractor.wait_till_finished_and_then(print_result)
 
     browser.quit()
 

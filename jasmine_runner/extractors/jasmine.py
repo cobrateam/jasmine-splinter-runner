@@ -30,7 +30,25 @@ class Extractor(object):
         self._description = self.browser.find_by_css(".runner .description").first.text
         return self._description
 
+    def has_finished(self):
+        return self.browser.is_text_present("Running...")
+
+    def wait_till_finished_and_then(self, function):
+        # maybe we can make this
+        while self.has_finished():
+            pass
+
+        function(self)
+
     def get_failures(self):
+        '''
+            this function returns an array with the following structure:
+            [{'title of test suite':
+                [{'title of nested test suite':
+                    [{'spec description': 'spec error message'}, ...]
+                , ...]
+            , ...]
+        '''
         rootDescribes = self.browser.find_by_xpath('//*%s/*%s%s' % (
             class_xpath_to_css('jasmine_reporter'),
             class_xpath_to_css('suite'),
