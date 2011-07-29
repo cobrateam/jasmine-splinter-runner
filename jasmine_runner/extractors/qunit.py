@@ -41,7 +41,12 @@ class Extractor(BaseExtractor):
         fail_suites = fail_container.find_by_xpath('*%s' % class_xpath_to_css('fail'))
 
         for suite in fail_suites:
-            description = suite.find_by_tag('strong').first.text
+            suite_description_node = suite.find_by_tag('strong').first
+            # hack to make message "pickable"
+            # some drivers (selenium) do not allow to get the text if the element is not visible
+            suite_description_node.click()
+            description = suite_description_node.text
+
             fail_messages = map(lambda el: el.text, suite.find_by_xpath('ol/li%s' % class_xpath_to_css('fail')))
 
             specs.append({

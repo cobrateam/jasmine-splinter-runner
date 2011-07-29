@@ -19,9 +19,7 @@ def print_success(extractor):
 def print_errors(extractor):
     description = extractor.description
     print
-    print len(description) * "-"
     print colored(description, 'yellow')
-    print len(description) * "-"
     print
 
     print format_errors(extractor.get_failures())
