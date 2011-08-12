@@ -12,7 +12,7 @@ def print_result(extractor):
 
 def print_success(extractor):
     print
-    print colored(u'✓ %s' % extractor.description, 'green')
+    print colored(u'%s' % extractor.description, 'green')
     print
 
 
@@ -38,7 +38,7 @@ def _print(obj, buffer, level):
         buffer.append((level * 2 * ' ') + title);
         if desc and isinstance(desc[0], basestring):
             for err in desc:
-                buffer.append(colored(u'%s  ✗ %s' % ((level * 2 * u' '), err), 'red'));
+                buffer.append(colored(u'%s  %s' % ((level * 2 * u' '), err), 'red'));
         else:
             level += 1;
             for suite in desc:
