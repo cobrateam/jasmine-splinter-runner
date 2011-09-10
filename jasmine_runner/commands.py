@@ -7,40 +7,32 @@ import re
 import sys
 import warnings
 
-from termcolor import colored
 from splinter.browser import Browser
-from jasmine_runner.string_formatter import format_exit
+from extractors.jasmine import Extractor as JExtractor
+from extractors.qunit import Extractor as QExtractor
+from reporters.stdout import print_result
+
 
 def run_specs(path, browser_driver='webdriver.firefox'):
-    print 'Using %s as runner.' % path
+    print
+    print 'Using %s as runner and %s as webdriver.' % (path, browser_driver)
 
     browser = Browser(browser_driver)
     browser.visit(path)
 
-    while browser.is_text_present("Running..."):
-        pass
+    Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, QExtractor])[0]
 
-    runner_div = browser.find_by_css('.runner').first
-    passed = 'passed' in runner_div['class']
-
-    output = browser.find_by_css(".runner .description").first.text
-
-    if passed:
-        color, exit_status = 'green', 0
-        print colored(output, color)
-    else:
-        failures = int(re.search(r'(\d+)\s*failure', output).group(1))
-        color, exit_status = 'red', failures
-        print format_exit(browser, output, color)
+    extractor = Extractor(browser)
+    extractor.wait_till_finished_and_then(print_result)
 
     browser.quit()
 
-    return exit_status
-
+    return extractor.failures_number
 
 
 def has_scheme(uri):
     return bool(re.match(r'^[^:]+://', uri))
+
 
 def main(args=sys.argv):
     ''' Runs Jasmine specs via console. '''
@@ -83,3 +75,4 @@ def main(args=sys.argv):
         runner_path = default_runner_path
 
     sys.exit(run_specs(runner_path, args.browser_driver))
+
