@@ -12,6 +12,8 @@ from extractors.jasmine import Extractor as JExtractor
 from extractors.qunit import Extractor as QExtractor
 from reporters.stdout import print_result
 
+class TestSuiteNotDetectedError(Exception):
+    pass
 
 def run_specs(path, browser_driver='firefox'):
     print
@@ -20,7 +22,10 @@ def run_specs(path, browser_driver='firefox'):
     browser = Browser(browser_driver)
     browser.visit(path)
 
-    Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, QExtractor])[0]
+    try:
+        Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, QExtractor])[0]
+    except IndexError:
+        raise TestSuiteNotDetectedError('test suite not detected.')
 
     extractor = Extractor(browser)
     extractor.wait_till_finished_and_then(print_result)
