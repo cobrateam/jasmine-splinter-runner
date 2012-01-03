@@ -66,29 +66,29 @@ class TestJasmineRunner(mocker.MockerTestCase):
     def test_splinter_driver(self):
         "should be able to customize the splinter driver to use"
         from splinter.browser import Browser
-        chrome_mock = Browser('webdriver.firefox')
-        firefox_mock = Browser('webdriver.firefox')
+        chrome_mock = Browser('firefox')
+        firefox_mock = Browser('firefox')
 
         Browser = self.mocker.replace('splinter.browser.Browser')
-        Browser('webdriver.chrome')
+        Browser('chrome')
         self.mocker.result(chrome_mock)
 
-        Browser('webdriver.firefox')
+        Browser('firefox')
         self.mocker.result(firefox_mock)
         self.mocker.replay()
 
-        run_specs(path_to_file('failed-specs.html'), browser_driver='webdriver.chrome')
-        run_specs(path_to_file('passed-specs.html'), browser_driver='webdriver.firefox')
+        run_specs(path_to_file('failed-specs.html'), browser_driver='chrome')
+        run_specs(path_to_file('passed-specs.html'), browser_driver='firefox')
 
         self.mocker.verify()
 
     def test_firefox_default_driver(self):
         "when no driver is specified, Firefox should be used"
         from splinter.browser import Browser
-        browser = Browser('webdriver.firefox')
+        browser = Browser('firefox')
 
         Browser = self.mocker.replace('splinter.browser.Browser')
-        Browser('webdriver.firefox')
+        Browser('firefox')
         self.mocker.result(browser)
         self.mocker.replay()
 
@@ -137,16 +137,16 @@ class TestJasmineRunner(mocker.MockerTestCase):
     def test_choose_the_splinter_driver(self):
         "should be able to choose the splinter driver from command line"
         from splinter.browser import Browser
-        browser = Browser('webdriver.firefox')
+        browser = Browser('firefox')
 
         self._mock_exit(w=0)
         Browser = self.mocker.replace('splinter.browser.Browser')
-        Browser('webdriver.chrome')
+        Browser('chrome')
         self.mocker.result(browser)
         self.mocker.replay()
 
         from jasmine_runner.commands import main
-        main(args=['jasmine-splinter', '--browser-driver=webdriver.chrome', '--url=%s' % path_to_file('passed-specs.html')])
+        main(args=['jasmine-splinter', '--browser-driver=chrome', '--url=%s' % path_to_file('passed-specs.html')])
 
         self.mocker.verify()
 
