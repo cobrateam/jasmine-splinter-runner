@@ -13,7 +13,7 @@ from extractors.qunit import Extractor as QExtractor
 from reporters.stdout import print_result
 
 
-def run_specs(path, browser_driver='webdriver.firefox'):
+def run_specs(path, browser_driver='firefox'):
     print
     print 'Using %s as runner and %s as webdriver.' % (path, browser_driver)
 
@@ -41,7 +41,7 @@ def main(args=sys.argv):
 
     parser = argparse.ArgumentParser(description=u'Run your jasmine specs from command line using splinter')
     parser.add_argument('uri', metavar='URI', nargs='?', help='file path or url to runner file', default=None)
-    parser.add_argument('-b', '--browser-driver', metavar='browser_driver', help='splinter driver to use', default='webdriver.firefox')
+    parser.add_argument('-b', '--browser-driver', metavar='browser_driver', help='splinter driver to use', default='firefox')
     #deprecated args
     parser.add_argument('-f', '--filepath', metavar='FILEPATH', help='path to runner file (deprecated)', default=None)
     parser.add_argument('-u', '--url', metavar='URL', help='url to runner (deprecated)', default=None)
