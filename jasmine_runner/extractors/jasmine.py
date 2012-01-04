@@ -36,7 +36,7 @@ class Extractor(BaseExtractor):
         if hasattr(self, '_description'):
             return self._description
 
-        self._description = self.browser.find_by_css('.runner .description').first.text.encode('utf8')
+        self._description = self.browser.find_by_css('.runner .description').first.text
         return self._description
 
     def get_failures(self):
@@ -52,7 +52,7 @@ class Extractor(BaseExtractor):
             for describe in describes:
                 desc = describe.find_by_css('.description')
                 spec = {}
-                children = spec[desc.first.text.encode('utf8')] = []
+                children = spec[desc.first.text] = []
                 specs.append(spec)
 
                 if 'suite' in describe['class']:
@@ -61,7 +61,7 @@ class Extractor(BaseExtractor):
                         children
                     )
                 elif 'spec' in describe['class']:
-                    children.extend(map(lambda el: el.text.encode('utf8'), describe.find_by_css('.resultMessage')))
+                    children.extend(map(lambda el: el.text, describe.find_by_css('.resultMessage')))
 
         traverse(rootDescribes, specs)
 

@@ -13,7 +13,7 @@ def print_result(extractor):
 
 def print_success(extractor):
     print
-    print colored('✓ %s' % extractor.description, 'green')
+    print colored('✓ %s' % extractor.description.encode('utf8'), 'green')
     print
 
 
@@ -35,10 +35,10 @@ def format_errors(errors):
 
 def _print(obj, buffer, level):
     for title, desc in obj.iteritems():
-        buffer.append((level * 2 * ' ') + title)
+        buffer.append((level * 2 * ' ') + title.encode('utf8'))
         if desc and isinstance(desc[0], basestring):
             for err in desc:
-                buffer.append(colored('%s  ✗ %s' % ((level * 2 * ' '), err), 'red'))
+                buffer.append(colored('%s  ✗ %s' % ((level * 2 * ' '), err.encode('utf8')), 'red'))
         else:
             level += 1
             for suite in desc:
