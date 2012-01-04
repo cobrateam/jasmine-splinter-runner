@@ -1,4 +1,5 @@
-#-*- encoding: utf8 -*-
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
 
 from termcolor import colored
 
@@ -12,14 +13,13 @@ def print_result(extractor):
 
 def print_success(extractor):
     print
-    print colored(u'✓ %s' % extractor.description, 'green')
+    print colored('✓ %s' % extractor.description, 'green')
     print
 
 
 def print_errors(extractor):
-    description = extractor.description
     print
-    print colored(description, 'yellow')
+    print colored(extractor.description, 'yellow')
     print
 
     print format_errors(extractor.get_failures())
@@ -29,20 +29,20 @@ def print_errors(extractor):
 def format_errors(errors):
     ret = []
     for error in errors:
-        ret.extend(_print(error, [], 0));
+        ret.extend(_print(error, [], 0))
     return '\n'.join(ret)
 
 
 def _print(obj, buffer, level):
     for title, desc in obj.iteritems():
-        buffer.append((level * 2 * ' ') + title);
+        buffer.append((level * 2 * ' ') + title)
         if desc and isinstance(desc[0], basestring):
             for err in desc:
-                buffer.append(colored(u'%s  ✗ %s' % ((level * 2 * u' '), err), 'red'));
+                buffer.append(colored('%s  ✗ %s' % ((level * 2 * ' '), err), 'red'))
         else:
-            level += 1;
+            level += 1
             for suite in desc:
-                _print(suite, buffer, level);
+                _print(suite, buffer, level)
 
     return buffer
 

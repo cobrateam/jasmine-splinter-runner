@@ -13,7 +13,7 @@ class Extractor(BaseExtractor):
         return browser.is_element_present_by_css('.jasmine_reporter')
 
     def has_finished(self):
-        return not self.browser.is_text_present("Running...")
+        return not self.browser.is_text_present('Running...')
 
     def has_failed(self):
         runner_div = self.browser.find_by_css('.runner').first
@@ -36,7 +36,7 @@ class Extractor(BaseExtractor):
         if hasattr(self, '_description'):
             return self._description
 
-        self._description = self.browser.find_by_css(".runner .description").first.text
+        self._description = self.browser.find_by_css('.runner .description').first.text.encode('utf8')
         return self._description
 
     def get_failures(self):
@@ -52,16 +52,16 @@ class Extractor(BaseExtractor):
             for describe in describes:
                 desc = describe.find_by_css('.description')
                 spec = {}
-                children = spec[desc.first.text] = []
+                children = spec[desc.first.text.encode('utf8')] = []
                 specs.append(spec)
-                
+
                 if 'suite' in describe['class']:
                     traverse(
                         describe.find_by_xpath('*%s' % class_xpath_to_css('failed')),
                         children
                     )
                 elif 'spec' in describe['class']:
-                    children.extend(map(lambda el: el.text, describe.find_by_css('.resultMessage')))
+                    children.extend(map(lambda el: el.text.encode('utf8'), describe.find_by_css('.resultMessage')))
 
         traverse(rootDescribes, specs)
 
