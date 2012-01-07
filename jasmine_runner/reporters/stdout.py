@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-from termcolor import colored
+import sys
+
+import termcolor
+
+
+def colored(text, color):
+    return termcolor.colored(text, color) if sys.stdout.isatty() else text
 
 
 def print_result(extractor):

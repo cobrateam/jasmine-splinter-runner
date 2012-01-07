@@ -81,3 +81,5 @@ def main(args=sys.argv):
 
     sys.exit(run_specs(runner_path, args.browser_driver))
 
+if __name__ == '__main__':
+    main()
