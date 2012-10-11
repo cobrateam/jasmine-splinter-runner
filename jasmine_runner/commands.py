@@ -15,29 +15,45 @@ from reporters.stdout import print_result
 class TestSuiteNotDetectedError(Exception):
     pass
 
-def run_specs(path, browser_driver='firefox'):
+def run_specs(path_or_paths, browser_driver='firefox'):
     print
-    print 'Using %s as runner and %s as webdriver.' % (path, browser_driver)
+    print 'Using %s as webdriver.' % browser_driver
 
+    paths = path_or_paths
+    if not isinstance(paths, (list, tuple)):
+        paths = [path_or_paths]
+
+    failures = 0
     browser = Browser(browser_driver)
-    browser.visit(path)
 
-    try:
-        Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, QExtractor])[0]
-    except IndexError:
-        raise TestSuiteNotDetectedError('test suite not detected.')
+    for path in paths:
+        print
+        print 'Running %s ...' % path
+        browser.visit(path)
 
-    extractor = Extractor(browser)
-    extractor.wait_till_finished_and_then(print_result)
+        try:
+            Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, QExtractor])[0]
+        except IndexError:
+            raise TestSuiteNotDetectedError('test suite not detected.')
+
+        extractor = Extractor(browser)
+        extractor.wait_till_finished_and_then(print_result)
+
+        failures += extractor.failures_number
 
     browser.quit()
 
-    return extractor.failures_number
+    return failures
 
 
 def has_scheme(uri):
     return bool(re.match(r'^[^:]+://', uri))
 
+def fix_path(uri):
+    if has_scheme(uri):
+        return uri
+    else:
+        return 'file://%s' % os.path.abspath(uri)
 
 def main(args=sys.argv):
     ''' Runs Jasmine specs via console. '''
@@ -45,7 +61,7 @@ def main(args=sys.argv):
     default_runner_path = 'file://%s' % os.path.join(current_directory, 'SpecRunner.html')
 
     parser = argparse.ArgumentParser(description=u'Run your jasmine specs from command line using splinter')
-    parser.add_argument('uri', metavar='URI', nargs='?', help='file path or url to runner file', default=None)
+    parser.add_argument('uri', metavar='URI', nargs='*', help='file path or url to runner file', default=None)
     parser.add_argument('-b', '--browser-driver', metavar='browser_driver', help='splinter driver to use', default='firefox')
     #deprecated args
     parser.add_argument('-f', '--filepath', metavar='FILEPATH', help='path to runner file (deprecated)', default=None)
@@ -55,10 +71,7 @@ def main(args=sys.argv):
     args = parser.parse_args(args)
 
     if args.uri:
-        if has_scheme(args.uri):
-            runner_path = args.uri
-        else:
-            runner_path = 'file://%s' % args.uri
+        runner_path = [fix_path(uri) for uri in args.uri]
 
     # deprecated options
     # when the deprecated options are removed this code can be removed
