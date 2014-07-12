@@ -16,11 +16,7 @@ from reporters.stdout import print_result
 class TestSuiteNotDetectedError(Exception):
     pass
 
-def run_specs(path, browser_driver='firefox'):
-    print
-    print 'Using %s as runner and %s as webdriver.' % (path, browser_driver)
-
-    browser = Browser(browser_driver)
+def run_specs_with_browser(path, browser):
     browser.visit(path)
 
     try:
@@ -34,6 +30,14 @@ def run_specs(path, browser_driver='firefox'):
     browser.quit()
 
     return extractor.failures_number
+
+
+def run_specs(path, browser_driver='firefox'):
+    print
+    print 'Using %s as runner and %s as webdriver.' % (path, browser_driver)
+
+    browser = Browser(browser_driver)
+    return run_specs_with_browser(path, browser)
 
 
 def has_scheme(uri):
