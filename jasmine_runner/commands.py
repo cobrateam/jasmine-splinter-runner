@@ -9,6 +9,7 @@ import warnings
 
 from splinter.browser import Browser
 from extractors.jasmine import Extractor as JExtractor
+from extractors.jasmine2 import Extractor as J2Extractor
 from extractors.qunit import Extractor as QExtractor
 from reporters.stdout import print_result
 
@@ -23,7 +24,7 @@ def run_specs(path, browser_driver='firefox'):
     browser.visit(path)
 
     try:
-        Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, QExtractor])[0]
+        Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, J2Extractor, QExtractor])[0]
     except IndexError:
         raise TestSuiteNotDetectedError('test suite not detected.')
 
@@ -81,5 +82,3 @@ def main(args=sys.argv):
 
     sys.exit(run_specs(runner_path, args.browser_driver))
 
-if __name__ == '__main__':
-    main()
