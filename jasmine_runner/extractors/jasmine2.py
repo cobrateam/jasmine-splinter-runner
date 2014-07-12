@@ -52,7 +52,7 @@ class Extractor(BaseExtractor):
         bars = [bar for bar in bars
                 if self._specs_re.match(bar.text) and not bar.text[0] == '0']
         if not bars:
-            return None
+            return "Jasmine 2"
         self._description = bars[0].text
         return self._description
 
