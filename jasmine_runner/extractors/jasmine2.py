@@ -9,17 +9,27 @@ from jasmine_runner.extractors import BaseExtractor, class_xpath_to_css
 class Extractor(BaseExtractor):
     _failure_re = re.compile(r'(\d+)\s*failures')
     _specs_re = re.compile(r'^(\d+)\s*specs,')
+    _css_roots = ('jasmine_html-reporter', 'html-reporter')
+
+    def __init__(self, browser):
+        super(Extractor, self).__init__(browser)
+        for root in self._css_roots:
+            if browser.is_element_present_by_css('.'+root):
+                self.css_root = root
+                break
 
     @staticmethod
     def is_it_me(browser):
-        return browser.is_element_present_by_css('.html-reporter')
+        for root in Extractor._css_roots:
+            if browser.is_element_present_by_css('.'+root):
+                return True
 
     def has_finished(self):
         return self.browser.is_element_present_by_css('.results')
 
     def has_failed(self):
         bars = self.browser.find_by_xpath('//div%s/div%s/span%s' % (
-            class_xpath_to_css('html-reporter'),
+            class_xpath_to_css(self.css_root),
             class_xpath_to_css('alert'),
             class_xpath_to_css('bar'),
         ))
@@ -44,7 +54,7 @@ class Extractor(BaseExtractor):
             return self._description
 
         bars = self.browser.find_by_xpath('//div%s/div%s/span%s' % (
-            class_xpath_to_css('html-reporter'),
+            class_xpath_to_css(self.css_root),
             class_xpath_to_css('alert'),
             class_xpath_to_css('bar'),
         ))
@@ -66,7 +76,7 @@ class Extractor(BaseExtractor):
             , ...]
         '''
         results = self.browser.find_by_xpath('//div%s/div%s' % (
-            class_xpath_to_css('html-reporter'),
+            class_xpath_to_css(self.css_root),
             class_xpath_to_css('results')
         ))
         failure_details = results.find_by_xpath('div%s/div%s' % (
