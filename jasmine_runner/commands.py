@@ -16,7 +16,7 @@ from reporters.stdout import print_result
 class TestSuiteNotDetectedError(Exception):
     pass
 
-def run_specs_with_browser(path, browser):
+def run_specs_with_browser(path, browser, quit=True):
     browser.visit(path)
 
     try:
@@ -27,7 +27,8 @@ def run_specs_with_browser(path, browser):
     extractor = Extractor(browser)
     extractor.wait_till_finished_and_then(print_result)
 
-    browser.quit()
+    if quit:
+        browser.quit()
 
     return extractor.failures_number
 
