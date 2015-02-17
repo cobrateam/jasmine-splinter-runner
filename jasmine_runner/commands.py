@@ -11,16 +11,20 @@ from splinter.browser import Browser
 from extractors.jasmine import Extractor as JExtractor
 from extractors.jasmine2 import Extractor as J2Extractor
 from extractors.qunit import Extractor as QExtractor
+from extractors.mocha import Extractor as MochaExtractor
 from reporters.stdout import print_result
+
 
 class TestSuiteNotDetectedError(Exception):
     pass
+
 
 def run_specs_with_browser(path, browser, quit=True):
     browser.visit(path)
 
     try:
-        Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, J2Extractor, QExtractor])[0]
+        Extractor = filter(lambda e: e.is_it_me(browser), [
+            MochaExtractor, JExtractor, J2Extractor, QExtractor])[0]
     except IndexError:
         raise TestSuiteNotDetectedError('test suite not detected.')
 
