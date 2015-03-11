@@ -9,30 +9,40 @@ import warnings
 
 from splinter.browser import Browser
 from extractors.jasmine import Extractor as JExtractor
+from extractors.jasmine2 import Extractor as J2Extractor
 from extractors.qunit import Extractor as QExtractor
+from extractors.mocha import Extractor as MochaExtractor
 from reporters.stdout import print_result
+
 
 class TestSuiteNotDetectedError(Exception):
     pass
 
-def run_specs(path, browser_driver='firefox'):
-    print
-    print 'Using %s as runner and %s as webdriver.' % (path, browser_driver)
 
-    browser = Browser(browser_driver)
+def run_specs_with_browser(path, browser, quit=True):
     browser.visit(path)
 
     try:
-        Extractor = filter(lambda e: e.is_it_me(browser), [JExtractor, QExtractor])[0]
+        Extractor = filter(lambda e: e.is_it_me(browser), [
+            MochaExtractor, JExtractor, J2Extractor, QExtractor])[0]
     except IndexError:
         raise TestSuiteNotDetectedError('test suite not detected.')
 
     extractor = Extractor(browser)
     extractor.wait_till_finished_and_then(print_result)
 
-    browser.quit()
+    if quit:
+        browser.quit()
 
     return extractor.failures_number
+
+
+def run_specs(path, browser_driver='firefox'):
+    print
+    print 'Using %s as runner and %s as webdriver.' % (path, browser_driver)
+
+    browser = Browser(browser_driver)
+    return run_specs_with_browser(path, browser)
 
 
 def has_scheme(uri):
@@ -81,5 +91,3 @@ def main(args=sys.argv):
 
     sys.exit(run_specs(runner_path, args.browser_driver))
 
-if __name__ == '__main__':
-    main()

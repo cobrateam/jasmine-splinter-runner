@@ -12,7 +12,7 @@ setup(name='jasmine-splinter-runner',
       packages=find_packages(),
       include_package_data=True,
       test_suite='nose.collector',
-      install_requires=['argparse>=1.2.1,<1.3.0', 'splinter>=0.4.3,<0.5.0', 'termcolor>=1.1.0,<1.2.0'],
+      install_requires=['argparse>=1.2.1,<1.3.0', 'splinter>=0.4.3,<0.8.0', 'termcolor>=1.1.0,<1.2.0'],
       tests_require=['nose', 'mocker'],
       entry_points = {
           'console_scripts' : [
